@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package auth;
+
+option go_package = "/auth_service";
+
+
+service  AuthService{
+  rpc CreateAuth(CreateAuthReq) returns (CreateAuthResp){}
+  rpc UpdateAuth(UpdateAuthReq) returns (UpdateAuthResp){}
+  rpc Email(EmailReq) returns (EmailResp){}
+}
+
+message Status {
+  bool status = 1;
+  string message = 2;
+}
+
+message CreateAuthReq{
+  uint64 uid = 1;
+}
+
+message CreateAuthResp{
+  Status status = 1;
+  string access_token = 2;
+  string refresh_token = 3;
+}
+
+message UpdateAuthReq{
+  string refresh_token = 1;
+}
+
+message UpdateAuthResp{
+  Status status = 1;
+  string access_token = 2;
+  string access_expire = 3;
+  string refresh_token = 4;
+  string refresh_expire = 5;
+}
+
+message EmailReq{
+  string Email = 1;
+}
+
+message EmailResp{
+  Status status = 1;
+}
+
+//message CaptchaReq{
+//  int32 captcha = 1;
+//}
+//
+//message CaptchaResp{
+//  bool captchaTrue = 2;
+//}
+
