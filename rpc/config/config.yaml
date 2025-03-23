@@ -1,0 +1,18 @@
+Secrets:
+  accessTokenSecret: "CzXyrohAwqohwqSewqRrweqtwer"
+  refreshTokenSecret: "CzXyralAbdaEbdkaCqewqwrqwrfqw"
+
+TokenExpiry:
+  accessTokenExpiry: 7200  # 2 小时
+  refreshTokenExpiry: 604800  # 7 天
+
+Redis:
+  address: "127.0.0.1:6379"
+  username: ""
+  password: ""
+  db: 0
+
+Registry:
+  registry_address: 127.0.0.1:2379
+  username: ""
+  password: ""
