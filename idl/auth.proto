@@ -2,55 +2,58 @@ syntax = "proto3";
 
 package auth;
 
-option go_package = "/auth_service";
+option go_package = "auth_service";
 
-
-service  AuthService{
-  rpc CreateAuth(CreateAuthReq) returns (CreateAuthResp){}
-  rpc UpdateAuth(UpdateAuthReq) returns (UpdateAuthResp){}
-  rpc Email(EmailReq) returns (EmailResp){}
+service AuthService {
+  rpc GenerateToken(GenerateTokenRequest) returns (GenerateTokenResponse);
+  rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse);
+  rpc CheckAccessToken(CheckAccessTokenRequest) returns (CheckAccessTokenResponse);
+  rpc CheckRefreshToken(CheckRefreshTokenRequest) returns (CheckRefreshTokenResponse);
+  rpc Email(EmailRequest) returns (EmailResponse);
 }
 
-message Status {
-  bool status = 1;
-  string message = 2;
-}
-
-message CreateAuthReq{
+message GenerateTokenRequest {
   uint64 uid = 1;
 }
 
-message CreateAuthResp{
-  Status status = 1;
-  string access_token = 2;
-  string refresh_token = 3;
+message GenerateTokenResponse {
+  string access_token = 1;
+  string refresh_token = 2;
+  int64 access_token_expire = 3;
+  int64 refresh_token_expire = 4;
 }
 
-message UpdateAuthReq{
+message RefreshTokenRequest {
   string refresh_token = 1;
 }
 
-message UpdateAuthResp{
-  Status status = 1;
-  string access_token = 2;
-  string access_expire = 3;
-  string refresh_token = 4;
-  string refresh_expire = 5;
+message RefreshTokenResponse {
+  string access_token = 1;
+  string refresh_token = 2;
+  int64 access_token_expire = 3;
+  int64 refresh_token_expire = 4;
 }
 
-message EmailReq{
-  string Email = 1;
+message CheckAccessTokenRequest {
+  string access_token = 1;
 }
 
-message EmailResp{
-  Status status = 1;
+message CheckAccessTokenResponse {
+  bool check_access_expiresAt = 1;
 }
 
-//message CaptchaReq{
-//  int32 captcha = 1;
-//}
-//
-//message CaptchaResp{
-//  bool captchaTrue = 2;
-//}
+message CheckRefreshTokenRequest {
+  string refresh_token = 1;
+}
 
+message CheckRefreshTokenResponse {
+  bool check_refresh_expiresAt= 1;
+}
+
+message EmailRequest {
+  string email = 1;
+}
+
+message EmailResponse {
+  int64 captcha = 1;
+}
