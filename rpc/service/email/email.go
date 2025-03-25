@@ -41,7 +41,7 @@ func SendCaptchaEmail(to string) (int, error) {
 	captcha := GenerateCaptcha()
 	subject := "欢迎使用ITU"
 	from := "1356918183@qq.com"
-	body := fmt.Sprintf("您的验证码是：%s。密码五分钟过期，请尽快完成验证。", captcha)
+	body := fmt.Sprintf("您的验证码是：%d。密码五分钟过期，请尽快完成验证。", captcha)
 
 	// 发送邮件
 	m := gomail.NewMessage()

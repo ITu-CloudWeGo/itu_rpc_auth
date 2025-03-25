@@ -27,7 +27,7 @@ func main() {
 		new(AuthServiceImpl),
 		server.WithRegistry(r),
 		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{
-			ServiceName: "Auth",
+			ServiceName: "auth",
 		}),
 	)
 
