@@ -17,11 +17,7 @@ var (
 )
 
 func init() {
-	var err error
-	globalConfig, err = config.GetConfig()
-	if err != nil {
-		panic(fmt.Sprintf("failed to load config: %v", err))
-	}
+	globalConfig = config.GetConfig()
 
 	redisClient = redis.NewClient(&redis.Options{
 		Addr:     globalConfig.Redis.Address,

@@ -5,7 +5,7 @@ import (
 	auth_service "github.com/ITu-CloudWeGo/itu_rpc_auth/rpc/kitex_gen/auth_service"
 	"github.com/ITu-CloudWeGo/itu_rpc_auth/rpc/service/email"
 	"github.com/ITu-CloudWeGo/itu_rpc_auth/rpc/service/jwt"
-	"log"
+	"github.com/cloudwego/kitex/pkg/klog"
 	"time"
 )
 
@@ -17,13 +17,13 @@ func (s *AuthServiceImpl) GenerateToken(ctx context.Context, req *auth_service.G
 	// TODO: Your code here...
 	accessToken, accessExpire, err := jwt.GenerateAccessToken(req.Uid)
 	if err != nil {
-		log.Printf("generate access token failed: %v", err)
+		klog.Errorf("generate access token failed: %v", err)
 		return nil, err
 	}
 
 	refreshToken, refreshExpire, err := jwt.GenerateRefreshToken(req.Uid)
 	if err != nil {
-		log.Printf("generate refresh token failed: %v", err)
+		klog.Errorf("generate refresh token failed: %v", err)
 		return nil, err
 	}
 
@@ -40,19 +40,19 @@ func (s *AuthServiceImpl) RefreshToken(ctx context.Context, req *auth_service.Re
 	// TODO: Your code here...
 	uid, err := jwt.ValidateRefreshToken(req.RefreshToken)
 	if err != nil {
-		log.Printf("validate refresh token failed: %v", err)
+		klog.Errorf("validate refresh token failed: %v", err)
 		return nil, err
 	}
 
 	accessToken, accessExpire, err := jwt.GenerateAccessToken(uid)
 	if err != nil {
-		log.Printf("generate access token failed: %v", err)
+		klog.Errorf("generate access token failed: %v", err)
 		return nil, err
 	}
 
 	refreshToken, refreshExpire, err := jwt.GenerateRefreshToken(uid)
 	if err != nil {
-		log.Printf("generate refresh token failed: %v", err)
+		klog.Errorf("generate refresh token failed: %v", err)
 		return nil, err
 	}
 
@@ -69,7 +69,7 @@ func (s *AuthServiceImpl) CheckAccessToken(ctx context.Context, req *auth_servic
 	// TODO: Your code here...
 	accessTokenExpire, err := jwt.CheckAccessToken(req.AccessToken)
 	if err != nil {
-		log.Printf("validate access token failed: %v", err)
+		klog.Errorf("validate access token failed: %v", err)
 		return nil, err
 	}
 	isExpired := time.Now().After(accessTokenExpire)
@@ -84,7 +84,7 @@ func (s *AuthServiceImpl) CheckRefreshToken(ctx context.Context, req *auth_servi
 	// TODO: Your code here...
 	refreshTokenExpire, err := jwt.CheckRefreshToken(req.RefreshToken)
 	if err != nil {
-		log.Printf("validate refresh token failed: %v", err)
+		klog.Errorf("validate refresh token failed: %v", err)
 		return nil, err
 	}
 	isExpired := time.Now().After(refreshTokenExpire)
@@ -99,7 +99,7 @@ func (s *AuthServiceImpl) Email(ctx context.Context, req *auth_service.EmailRequ
 	// TODO: Your code here...
 	captcha, err := email.SendCaptchaEmail(req.Email)
 	if err != nil {
-		log.Printf("发送验证码邮件失败: email=%s, error=%v", req.Email, err)
+		klog.Errorf("发送验证码邮件失败: email=%s, error=%v", req.Email, err)
 		return nil, err
 	}
 

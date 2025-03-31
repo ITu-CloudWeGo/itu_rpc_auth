@@ -3,12 +3,23 @@ package config
 import (
 	_ "embed"
 	"fmt"
+	"github.com/cloudwego/kitex/pkg/klog"
 	"sync"
 
 	"gopkg.in/yaml.v3"
 )
 
+type Kitex struct {
+	Service       string `yaml:"Service"`
+	Address       string `yaml:"Address"`
+	LogLevel      string `yaml:"LogLevel"`
+	LogFileName   string `yaml:"LogFileName"`
+	LogMaxSize    int    `yaml:"LogMaxSize"`
+	LogMaxBackups int    `yaml:"LogMaxBackups"`
+	LogMaxAge     int    `yaml:"LogMaxAge"`
+}
 type Config struct {
+	Kitex   Kitex `yaml:"Kitex"`
 	Secrets struct {
 		AccessTokenSecret  string `yaml:"AccessTokenSecret"`
 		RefreshTokenSecret string `yaml:"RefreshTokenSecret"`
@@ -41,20 +52,20 @@ var (
 //go:embed config.yaml
 var data []byte
 
-func GetConfig() (*Config, error) {
-	var err error
+func GetConfig() *Config {
+
 	once.Do(func() {
-		configInstance, err = loadConfig()
+		configInstance = loadConfig()
 	})
-	return configInstance, err
+	return configInstance
 }
 
-func loadConfig() (*Config, error) {
+func loadConfig() *Config {
 	var conf Config
 
 	err := yaml.Unmarshal(data, &conf)
 	if err != nil {
-		return nil, fmt.Errorf("failed to unmarshal config: %w", err)
+		panic(fmt.Errorf("failed to unmarshal config: %w", err))
 	}
 
 	//etcdHostEnv := os.Getenv("ETCD_HOST")
@@ -62,5 +73,27 @@ func loadConfig() (*Config, error) {
 	//	conf.Registry.RegistryAddress = etcdHostEnv
 	//}
 
-	return &conf, nil
+	return &conf
+}
+
+func LogLevel() klog.Level {
+	level := GetConfig().Kitex.LogLevel
+	switch level {
+	case "trace":
+		return klog.LevelTrace
+	case "debug":
+		return klog.LevelDebug
+	case "info":
+		return klog.LevelInfo
+	case "notice":
+		return klog.LevelNotice
+	case "warn":
+		return klog.LevelWarn
+	case "error":
+		return klog.LevelError
+	case "fatal":
+		return klog.LevelFatal
+	default:
+		return klog.LevelInfo
+	}
 }

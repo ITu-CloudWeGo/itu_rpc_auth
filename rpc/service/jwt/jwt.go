@@ -2,7 +2,6 @@ package jwt
 
 import (
 	"errors"
-	"fmt"
 	"github.com/ITu-CloudWeGo/itu_rpc_auth/rpc/config"
 	"github.com/golang-jwt/jwt/v5"
 	"time"
@@ -18,11 +17,9 @@ var (
 )
 
 func init() {
-	var err error
-	globalConfig, err = config.GetConfig()
-	if err != nil {
-		panic(fmt.Sprintf("failed to load config: %v", err))
-	}
+
+	globalConfig = config.GetConfig()
+
 }
 
 func GenerateAccessToken(uid uint64) (string, int64, error) {

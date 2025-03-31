@@ -1,3 +1,12 @@
+Kitex:
+  Service: "auth_service"
+  Address: "0.0.0.0:8888"
+  LogLevel: info
+  LogFileName: "log/kitex.log"
+  LogMaxSize: 10
+  LogMaxAge: 3
+  LogMaxBackups: 50
+
 Secrets:
   AccessTokenSecret: "CzXyrohAwqohwqSewqRrweqtwer"
   RefreshTokenSecret: "CzXyralAbdaEbdkaCqewqwrqwrfqw"
