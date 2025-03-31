@@ -17,7 +17,7 @@ func main() {
 		log.Fatalf("加载配置失败: %v", err)
 	}
 	r, err := etcd.NewEtcdRegistry(
-		[]string{conf.Registry.RegistryAddress},
+		conf.Registry.RegistryAddress,
 		etcd.WithDialTimeoutOpt(10*time.Second),
 	)
 	if err != nil {

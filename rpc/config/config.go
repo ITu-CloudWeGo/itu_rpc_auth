@@ -3,7 +3,6 @@ package config
 import (
 	_ "embed"
 	"fmt"
-	"os"
 	"sync"
 
 	"gopkg.in/yaml.v3"
@@ -11,26 +10,26 @@ import (
 
 type Config struct {
 	Secrets struct {
-		AccessTokenSecret  string `yaml:"accessTokenSecret"`
-		RefreshTokenSecret string `yaml:"refreshTokenSecret"`
+		AccessTokenSecret  string `yaml:"AccessTokenSecret"`
+		RefreshTokenSecret string `yaml:"RefreshTokenSecret"`
 	} `yaml:"Secrets"`
 
 	TokenExpiry struct {
-		AccessTokenExpiry  int64 `yaml:"accessTokenExpiry"`
-		RefreshTokenExpiry int64 `yaml:"refreshTokenExpiry"`
+		AccessTokenExpiry  int64 `yaml:"AccessTokenExpiry"`
+		RefreshTokenExpiry int64 `yaml:"RefreshTokenExpiry"`
 	} `yaml:"TokenExpiry"`
 
 	Redis struct {
-		Address  string `yaml:"address"`
-		Username string `yaml:"username"`
-		Password string `yaml:"password"`
-		DB       int    `yaml:"db"`
+		Address  string `yaml:"Address"`
+		Username string `yaml:"Username"`
+		Password string `yaml:"Password"`
+		DB       int    `yaml:"DB"`
 	} `yaml:"Redis"`
 
 	Registry struct {
-		RegistryAddress string `yaml:"registry_address"`
-		UserName        string `yaml:"username"`
-		Password        string `yaml:"password"`
+		RegistryAddress []string `yaml:"RegistryAddress"`
+		UserName        string   `yaml:"Username"`
+		Password        string   `yaml:"Password"`
 	} `yaml:"Registry"`
 }
 
@@ -58,10 +57,10 @@ func loadConfig() (*Config, error) {
 		return nil, fmt.Errorf("failed to unmarshal config: %w", err)
 	}
 
-	etcdHostEnv := os.Getenv("ETCD_HOST")
-	if etcdHostEnv != "" {
-		conf.Registry.RegistryAddress = etcdHostEnv
-	}
+	//etcdHostEnv := os.Getenv("ETCD_HOST")
+	//if etcdHostEnv != "" {
+	//	conf.Registry.RegistryAddress = etcdHostEnv
+	//}
 
 	return &conf, nil
 }
